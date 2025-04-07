@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Braille Text Converter</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', Arial, sans-serif;
+            background: linear-gradient(120deg, #1e3c72 0%, #2a5298 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 2.5rem;
+            width: 100%;
+            max-width: 700px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+            transition: transform 0.2s ease;
+        }
+
+        .container:hover {
+            transform: scale(1.02);
+        }
+
+        h1 {
+            color: #1e3c72;
+            text-align: center;
+            margin-bottom: 2rem;
+            font-size: 2.2rem;
+            font-weight: 700;
+        }
+
+        .upload-section {
+            margin-bottom: 2rem;
+        }
+
+        label {
+            display: block;
+            color: #2a5298;
+            font-size: 1.1rem;
+            font-weight: 500;
+            margin-bottom: 0.75rem;
+        }
+
+        input[type="file"] {
+            width: 100%;
+            padding: 0.8rem;
+            border: 2px dashed #2a5298;
+            border-radius: 10px;
+            background: #f0f4f8;
+            margin-bottom: 1rem;
+            cursor: pointer;
+        }
+
+        button {
+            background: #2a5298;
+            color: #ffffff;
+            border: none;
+            padding: 0.9rem 2rem;
+            border-radius: 30px;
+            font-size: 1.1rem;
+            font-weight: 500;
+            cursor: pointer;
+            width: 100%;
+            transition: background 0.3s ease, transform 0.2s ease;
+        }
+
+        button:hover {
+            background: #1e3c72;
+            transform: translateY(-2px);
+        }
+
+        .home-button {
+            background: #e74c3c;
+            margin-top: 1rem;
+        }
+
+        .home-button:hover {
+            background: #c0392b;
+        }
+
+        .results {
+            background: #f0f4f8;
+            padding: 1.5rem;
+            border-radius: 15px;
+            margin-top: 1.5rem;
+            display: none;
+        }
+
+        .results.visible {
+            display: block;
+        }
+
+        .results h3 {
+            color: #1e3c72;
+            margin-bottom: 1rem;
+            font-size: 1.4rem;
+        }
+
+        .results p {
+            color: #333;
+            margin: 0.75rem 0;
+            font-size: 1rem;
+            line-height: 1.5;
+            word-break: break-word;
+        }
+
+        .results strong {
+            color: #2a5298;
+            font-weight: 600;
+        }
+        .audio-player {
+            margin-top: 1rem;
+        }
+
+        .error {
+            color: #e74c3c;
+            text-align: center;
+            margin-top: 1rem;
+            font-weight: 500;
+            display: none;
+        }
+
+        .error.visible {
+            display: block;
+        }
+
+        .image-preview {
+            margin-top: 2rem;
+            text-align: center;
+            display: none;
+        }
+
+        .image-preview.visible {
+            display: block;
+        }
+
+        .image-preview img {
+            max-width: 100%;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .image-preview img:hover {
+            transform: scale(1.05);
+        }
+        tify-content: center;
+        }
+        
+        
+        
+        
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 1.5rem;
+            }
+            h1 {
+                font-size: 1.8rem;
+            }
+            button {
+                padding: 0.8rem 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Braille Text Converter</h1>
+        
+        <div class="upload-section">
+            <form method="POST" enctype="multipart/form-data">
+                <label for="file">Select an image with text:</label>
+                <input type="file" name="file" id="file" accept="image/*" required>
+                <button type="submit">Convert to Braille</button>
+            </form>
+            <!-- Redirect Button -->
+            <button class="home-button" onclick="window.location.href='http://127.0.0.1:5000/'">Reset</button>
+        </div>
+
+        <div class="error {{ 'visible' if error else '' }}">{{ error|default('') }}</div>
+
+        <div class="results {{ 'visible' if extracted_text else '' }}">
+            <h3>Conversion Results</h3>
+            <p><strong>Extracted Text:</strong> {{ extracted_text|default('') }}</p>
+            <p><strong>Braille:</strong> {{ braille_text|default('') }} 
+                
+                    
+                </p>
+            <p><strong>English (from Braille):</strong> {{ english_from_braille|default('') }}</p>
+
+            <!-- Audio Player -->
+            
+            <div class="audio-player">
+                <p><strong>Audio Output:</strong></p>
+                <audio controls>
+                    <source src="{{ url_for('static', filename=audio_path) }}" type="audio/mp3">
+                    Your browser does not support the audio element.
+                </audio>
+            </div>
+
+        </div>
+
+        <div class="image-preview {{ 'visible' if image_path else '' }}">
+            <img src="{{ url_for('static', filename=image_path) if image_path else '' }}" alt="Uploaded Image">
+        </div>
+    </div>
+</body>
+</html>
