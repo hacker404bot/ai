@@ -1,0 +1,8 @@
+flask
+tensorflow
+opencv-python
+scikit-learn
+gunicorn
+gTTS
+numpy
+pytesseract
