@@ -5,9 +5,13 @@ import cv2
 import numpy as np
 import os
 from gtts import gTTS
+import platform
 app = Flask(__name__)
 
-pytesseract.pytesseract.tesseract_cmd = r"C:\Program Files\Tesseract-OCR\tesseract.exe"
+# Optional: Set correct path only on Windows
+if platform.system() == "Windows":
+    pytesseract.pytesseract.tesseract_cmd = r"C:\Program Files\Tesseract-OCR\tesseract.exe"
+
 
 braille = ['\u2834','\u2802','\u2806','\u2812','\u2832','\u2822','\u2816','\u2836','\u2826','\u2814',
            '\u2801','\u2803','\u2809','\u2819','\u2811','\u280b','\u281b','\u2813','\u280a','\u281a',
